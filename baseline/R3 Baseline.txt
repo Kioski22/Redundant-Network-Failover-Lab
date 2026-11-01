@@ -1,0 +1,129 @@
+R3 BASELINE
+
+vyos@R3:~$ show ip ospf neighbor
+show ip route ospf
+show ip ospf database
+show ip ospf interface
+show interfaces
+show configuration commands
+
+Neighbor ID     Pri State           Up Time         Dead Time Address         Interface                        RXmtL RqstL DBsmL
+1.1.1.1           1 Full/-          13m30s            39.464s 10.0.0.5        eth0:10.0.0.6                        0     0     0
+4.4.4.4           1 Full/-          13m31s            39.008s 10.0.0.14       eth1:10.0.0.13                       0     0     0
+
+Codes: K - kernel route, C - connected, L - local, S - static,
+       R - RIP, O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric, t - Table-Direct,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+IPv4 unicast VRF default:
+O>* 1.1.1.1/32 [110/20] via 10.0.0.5, eth0, weight 1, 00:13:21
+O>* 2.2.2.2/32 [110/30] via 10.0.0.5, eth0, weight 1, 00:13:21
+  *                     via 10.0.0.14, eth1, weight 1, 00:13:21
+O>* 4.4.4.4/32 [110/20] via 10.0.0.14, eth1, weight 1, 00:13:26
+O>* 10.0.0.0/30 [110/30] via 10.0.0.5, eth0, weight 1, 00:13:21
+O>* 10.0.0.8/30 [110/30] via 10.0.0.14, eth1, weight 1, 00:13:26
+O>* 192.168.1.0/24 [110/21] via 10.0.0.5, eth0, weight 1, 00:13:21
+O>* 192.168.4.0/24 [110/21] via 10.0.0.14, eth1, weight 1, 00:13:26
+
+       OSPF Router with ID (3.3.3.3)
+
+                Router Link States (Area 0.0.0.0)
+
+Link ID         ADV Router      Age  Seq#       CkSum  Link count
+1.1.1.1        1.1.1.1          806 0x80000007 0x8b81 6
+2.2.2.2        2.2.2.2          811 0x80000005 0x2861 5
+3.3.3.3        3.3.3.3          810 0x80000005 0x46fe 5
+4.4.4.4        4.4.4.4          810 0x80000007 0x8340 6
+
+eth0 is up
+  ifindex 2, MTU 1500 bytes, BW 1000 Mbit <UP,LOWER_UP,BROADCAST,RUNNING,MULTICAST>
+  Internet Address 10.0.0.6/30, Broadcast 10.0.0.7, Area 0.0.0.0
+  MTU mismatch detection: enabled
+  Router ID 3.3.3.3, Network Type POINTOPOINT, Cost: 20
+  Transmit Delay is 1 sec, State Point-To-Point, Priority 1
+  No backup designated router on this network
+  Multicast group memberships: OSPFAllRouters
+  Timer intervals configured, Hello 10s, Dead 40s, Wait 40s, Retransmit 5
+    Hello due in 8.806s
+  Neighbor Count is 1, Adjacent neighbor count is 1
+  Graceful Restart hello delay: 10s
+  LSA retransmissions: 1
+eth1 is up
+  ifindex 3, MTU 1500 bytes, BW 1000 Mbit <UP,LOWER_UP,BROADCAST,RUNNING,MULTICAST>
+  Internet Address 10.0.0.13/30, Broadcast 10.0.0.15, Area 0.0.0.0
+  MTU mismatch detection: enabled
+  Router ID 3.3.3.3, Network Type POINTOPOINT, Cost: 20
+  Transmit Delay is 1 sec, State Point-To-Point, Priority 1
+  No backup designated router on this network
+  Multicast group memberships: OSPFAllRouters
+  Timer intervals configured, Hello 10s, Dead 40s, Wait 40s, Retransmit 5
+    Hello due in 8.806s
+  Neighbor Count is 1, Adjacent neighbor count is 1
+  Graceful Restart hello delay: 10s
+  LSA retransmissions: 1
+lo is up
+  ifindex 1, MTU 65536 bytes, BW 0 Mbit <UP,LOWER_UP,LOOPBACK,RUNNING>
+  Internet Address 3.3.3.3/32, Broadcast 3.3.3.3, Area 0.0.0.0
+  MTU mismatch detection: enabled
+  Router ID 3.3.3.3, Network Type LOOPBACK, Cost: 0
+  Transmit Delay is 1 sec, State Loopback, Priority 1
+  No backup designated router on this network
+  Multicast group memberships: <None>
+  Timer intervals configured, Hello 10s, Dead 40s, Wait 40s, Retransmit 5
+    Hello due in inactive
+  Neighbor Count is 0, Adjacent neighbor count is 0
+  Graceful Restart hello delay: 10s
+  LSA retransmissions: 0
+
+Codes: S - State, L - Link, u - Up, D - Down, A - Admin Down
+Interface    IP Address    MAC                VRF        MTU  S/L    Description
+-----------  ------------  -----------------  -------  -----  -----  -------------
+eth0         10.0.0.6/30   0c:35:e2:a9:00:00  default   1500  u/u    To-R1
+eth1         10.0.0.13/30  0c:35:e2:a9:00:01  default   1500  u/u    To-R4
+eth2         -             0c:35:e2:a9:00:02  default   1500  u/D
+eth3         -             0c:35:e2:a9:00:03  default   1500  u/D
+lo           127.0.0.1/8   00:00:00:00:00:00  default  65536  u/u
+             3.3.3.3/32
+             ::1/128
+set interfaces ethernet eth0 address '10.0.0.6/30'
+set interfaces ethernet eth0 description 'To-R1'
+set interfaces ethernet eth0 hw-id '0c:35:e2:a9:00:00'
+set interfaces ethernet eth1 address '10.0.0.13/30'
+set interfaces ethernet eth1 description 'To-R4'
+set interfaces ethernet eth1 hw-id '0c:35:e2:a9:00:01'
+set interfaces ethernet eth2 hw-id '0c:35:e2:a9:00:02'
+set interfaces ethernet eth3 hw-id '0c:35:e2:a9:00:03'
+set interfaces loopback lo address '3.3.3.3/32'
+set protocols ospf interface eth0 area '0'
+set protocols ospf interface eth0 cost '20'
+set protocols ospf interface eth0 network 'point-to-point'
+set protocols ospf interface eth1 area '0'
+set protocols ospf interface eth1 cost '20'
+set protocols ospf interface eth1 network 'point-to-point'
+set protocols ospf interface lo area '0'
+set protocols ospf log-adjacency-changes detail
+set protocols ospf parameters router-id '3.3.3.3'
+set service ntp allow-client address '127.0.0.0/8'
+set service ntp allow-client address '169.254.0.0/16'
+set service ntp allow-client address '10.0.0.0/8'
+set service ntp allow-client address '172.16.0.0/12'
+set service ntp allow-client address '192.168.0.0/16'
+set service ntp allow-client address '::1/128'
+set service ntp allow-client address 'fe80::/10'
+set service ntp allow-client address 'fc00::/7'
+set service ntp server time1.vyos.net
+set service ntp server time2.vyos.net
+set service ntp server time3.vyos.net
+set system config-management commit-revisions '100'
+set system console device ttyS0 kernel
+set system console device ttyS0 speed '115200'
+set system host-name 'R3'
+set system login operator-group default command-policy allow '*'
+set system login user vyos authentication encrypted-password 
+set system login user vyos authentication plaintext-password ''
+set system option reboot-on-upgrade-failure '5'
+set system syslog local facility all level 'info'
+set system syslog local facility local7 level 'debug'

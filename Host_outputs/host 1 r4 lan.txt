@@ -1,0 +1,36 @@
+This file is where i  record the reachability of host on r4 lan to r1 lan
+
+command used :
+ping -c 10 192.168.1.10
+traceroute 192.168.1.10
+
+-----------------------------------------------------------------------------------------------------------------------
+Host output :
+---
+/ # ping -c 10 192.168.1.10
+PING 192.168.1.10 (192.168.1.10): 56 data bytes
+64 bytes from 192.168.1.10: seq=0 ttl=61 time=4.541 ms
+
+64 bytes from 192.168.1.10: seq=1 ttl=61 time=2.191 ms
+64 bytes from 192.168.1.10: seq=2 ttl=61 time=2.001 ms
+64 bytes from 192.168.1.10: seq=3 ttl=61 time=2.037 ms
+64 bytes from 192.168.1.10: seq=4 ttl=61 time=2.012 ms
+64 bytes from 192.168.1.10: seq=5 ttl=61 time=1.965 ms
+64 bytes from 192.168.1.10: seq=6 ttl=61 time=2.073 ms
+64 bytes from 192.168.1.10: seq=7 ttl=61 time=1.928 ms
+64 bytes from 192.168.1.10: seq=8 ttl=61 time=2.317 ms
+64 bytes from 192.168.1.10: seq=9 ttl=61 time=1.835 ms
+
+--- 192.168.1.10 ping statistics ---
+10 packets transmitted, 10 packets received, 0% packet loss
+round-trip min/avg/max = 1.835/2.290/4.541 ms
+/ # traceroute 192.168.1.10
+traceroute to 192.168.1.10 (192.168.1.10), 30 hops max, 46 byte packets
+ 1  192.168.4.1 (192.168.4.1)  0.536 ms  0.587 ms  0.735 ms
+ 2  10.0.0.9 (10.0.0.9)  1.413 ms  1.281 ms  1.371 ms
+ 3  10.0.0.1 (10.0.0.1)  1.952 ms  2.016 ms  1.302 ms
+ 4  192.168.1.10 (192.168.1.10)  1.674 ms  2.842 ms  1.921 ms
+/ #
+
+
+--------------------------------------------------------------------------------------------------------------------------
