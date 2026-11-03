@@ -1,0 +1,82 @@
+TEST 2: Resumed link R1-R2 in GNS3 at <time>
+
+--- Ping (Host-1 to 192.168.1.10) ---
+05:39:42 PING 192.168.1.10 (192.168.1.10): 56 data bytes
+05:39:42 64 bytes from 192.168.1.10: seq=0 ttl=61 time=3.704 ms
+05:39:43 64 bytes from 192.168.1.10: seq=1 ttl=61 time=3.718 ms
+05:39:44 64 bytes from 192.168.1.10: seq=2 ttl=61 time=2.245 ms
+05:39:45 64 bytes from 192.168.1.10: seq=3 ttl=61 time=2.046 ms
+05:39:46 64 bytes from 192.168.1.10: seq=4 ttl=61 time=2.032 ms
+05:39:47 64 bytes from 192.168.1.10: seq=5 ttl=61 time=2.085 ms
+05:39:48 64 bytes from 192.168.1.10: seq=6 ttl=61 time=2.090 ms
+05:39:49 64 bytes from 192.168.1.10: seq=7 ttl=61 time=2.097 ms
+05:39:50 64 bytes from 192.168.1.10: seq=8 ttl=61 time=2.889 ms
+05:39:51 64 bytes from 192.168.1.10: seq=9 ttl=61 time=2.300 ms
+05:39:52 64 bytes from 192.168.1.10: seq=10 ttl=61 time=2.705 ms
+05:39:53 64 bytes from 192.168.1.10: seq=11 ttl=61 time=2.283 ms
+05:39:54 64 bytes from 192.168.1.10: seq=12 ttl=61 time=2.307 ms
+05:39:55 64 bytes from 192.168.1.10: seq=13 ttl=61 time=2.251 ms
+05:39:56 64 bytes from 192.168.1.10: seq=14 ttl=61 time=2.464 ms
+05:39:57 64 bytes from 192.168.1.10: seq=15 ttl=61 time=2.189 ms
+05:39:58 64 bytes from 192.168.1.10: seq=16 ttl=61 time=1.940 ms
+05:39:59 64 bytes from 192.168.1.10: seq=17 ttl=61 time=1.831 ms
+05:40:00 64 bytes from 192.168.1.10: seq=18 ttl=61 time=2.897 ms
+05:40:01 64 bytes from 192.168.1.10: seq=19 ttl=61 time=2.138 ms
+05:40:02 64 bytes from 192.168.1.10: seq=20 ttl=61 time=2.195 ms
+05:40:03 64 bytes from 192.168.1.10: seq=21 ttl=61 time=2.396 ms
+05:40:04 64 bytes from 192.168.1.10: seq=22 ttl=61 time=2.060 ms
+05:40:05 64 bytes from 192.168.1.10: seq=23 ttl=61 time=2.599 ms
+05:40:06 64 bytes from 192.168.1.10: seq=24 ttl=61 time=2.808 ms
+05:40:07 64 bytes from 192.168.1.10: seq=25 ttl=61 time=2.773 ms
+05:40:08 64 bytes from 192.168.1.10: seq=26 ttl=61 time=2.066 ms
+05:40:09 64 bytes from 192.168.1.10: seq=27 ttl=61 time=2.510 ms
+05:40:10 64 bytes from 192.168.1.10: seq=28 ttl=61 time=2.126 ms
+05:40:11 64 bytes from 192.168.1.10: seq=29 ttl=61 time=2.132 ms
+05:40:12 64 bytes from 192.168.1.10: seq=30 ttl=61 time=1.888 ms
+05:40:13 64 bytes from 192.168.1.10: seq=31 ttl=61 time=2.232 ms
+05:40:14 64 bytes from 192.168.1.10: seq=32 ttl=61 time=2.841 ms
+05:40:15 64 bytes from 192.168.1.10: seq=33 ttl=61 time=2.973 ms
+05:40:16 64 bytes from 192.168.1.10: seq=34 ttl=61 time=2.039 ms
+05:40:17 64 bytes from 192.168.1.10: seq=35 ttl=61 time=1.834 ms
+05:40:18 64 bytes from 192.168.1.10: seq=36 ttl=61 time=2.161 ms
+05:40:19 64 bytes from 192.168.1.10: seq=37 ttl=61 time=1.952 ms
+05:40:20 64 bytes from 192.168.1.10: seq=38 ttl=61 time=2.384 ms
+05:40:21 64 bytes from 192.168.1.10: seq=39 ttl=61 time=3.183 ms
+05:40:22 64 bytes from 192.168.1.10: seq=40 ttl=61 time=1.974 ms
+05:40:23 64 bytes from 192.168.1.10: seq=41 ttl=61 time=2.250 ms
+05:40:24 64 bytes from 192.168.1.10: seq=42 ttl=61 time=2.023 ms
+
+
+--- R1 log ---
+Nov 03 05:39:53 vyos-netlinkd[2375]: RTM_NEWLINK -> eth0, state=UP, mac=0c:49:97:01:00:00
+Nov 03 05:39:54 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: Down -> Init (HelloReceived)
+Nov 03 05:40:03 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: Init -> ExStart (2-WayReceived)
+Nov 03 05:40:03 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: ExStart -> Exchange (NegotiationDone)
+Nov 03 05:40:03 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: Exchange -> Full (ExchangeDone)
+
+
+
+--- R1: show ip route ospf ---
+IPv4 unicast VRF default:
+O>* 2.2.2.2/32 [110/10] via 10.0.0.2, eth0, weight 1, 00:02:37
+O>* 3.3.3.3/32 [110/20] via 10.0.0.6, eth1, weight 1, 00:18:09
+O>* 4.4.4.4/32 [110/20] via 10.0.0.2, eth0, weight 1, 00:02:37
+O>* 10.0.0.8/30 [110/20] via 10.0.0.2, eth0, weight 1, 00:02:37
+O>* 10.0.0.12/30 [110/40] via 10.0.0.2, eth0, weight 1, 00:02:37
+  *                       via 10.0.0.6, eth1, weight 1, 00:02:37
+O>* 192.168.4.0/24 [110/21] via 10.0.0.2, eth0, weight 1, 00:02:37
+
+
+--- Host-1: traceroute 192.168.1.10 ---
+
+/ # traceroute 192.168.1.10
+traceroute to 192.168.1.10 (192.168.1.10), 30 hops max, 46 byte packets
+ 1  192.168.4.1 (192.168.4.1)  1.163 ms  0.502 ms  0.346 ms
+ 2  10.0.0.9 (10.0.0.9)  2.281 ms  1.112 ms  1.149 ms
+ 3  10.0.0.1 (10.0.0.1)  2.058 ms  2.522 ms  1.624 ms
+ 4  192.168.1.10 (192.168.1.10)  1.946 ms  2.203 ms  2.998 ms
+
+RESULT: outage 0 seconds (no gaps in ping).
+Failback: adjacency took about 10 seconds (Link Up to Full).
+Path after: R1 - R2 - R4 (top path).
+Note: traffic stayed on the backup path while the adjacency formed, so nothing was lost.

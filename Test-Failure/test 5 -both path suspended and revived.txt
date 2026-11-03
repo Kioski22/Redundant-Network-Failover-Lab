@@ -1,0 +1,103 @@
+test 5 
+
+
+----Host 1 to 192.168.1.10 ping ---
+
+/ # ping 192.168.1.10 | while read l; do echo "$(date +%T) $l"; done
+08:09:12 PING 192.168.1.10 (192.168.1.10): 56 data bytes
+...
+08:09:32 64 bytes from 192.168.1.10: seq=20 ttl=61 time=2.059 ms
+08:09:33 64 bytes from 192.168.1.10: seq=21 ttl=61 time=2.166 ms
+08:09:34 64 bytes from 192.168.1.10: seq=22 ttl=61 time=1.873 ms
+^C
+ I WAITED FOR 60 SECONDS BEFORE PUTING THE PING PROCESS TO A HALT 
+
+--- R1's log ---
+
+
+vyos@R1:~$ monitor log
+Nov 03 08:03:24 vyos-netlinkd[2375]: RTM_NEWLINK -> eth0, state=DOWN, mac=0c:49:97:01:00:00
+Nov 03 08:03:24 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: Full -> Deleted (KillNbr)
+Nov 03 08:04:12 rsyslogd[1978]: -- MARK --
+Nov 03 08:08:43 kernel: e1000: eth0 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX
+Nov 03 08:08:43 vyos-netlinkd[2375]: RTM_NEWLINK -> eth0, state=UP, mac=0c:49:97:01:00:00
+Nov 03 08:08:44 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: Down -> Init (HelloReceived)
+Nov 03 08:08:53 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: Init -> ExStart (2-WayReceived)
+Nov 03 08:08:53 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: ExStart -> Exchange (NegotiationDone)
+Nov 03 08:08:53 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: Exchange -> Loading (ExchangeDone)
+Nov 03 08:08:53 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: Loading -> Full (LoadingDone)
+Nov 03 08:09:34 kernel: e1000: eth0 NIC Link is Down
+Nov 03 08:09:34 vyos-netlinkd[2375]: RTM_NEWLINK -> eth0, state=DOWN, mac=0c:49:97:01:00:00
+Nov 03 08:09:34 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: Full -> Deleted (KillNbr)
+
+--- R1's ospf routes --- 
+vyos@R1:~$
+vyos@R1:~$ show ip route ospf
+Codes: K - kernel route, C - connected, L - local, S - static,
+       R - RIP, O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric, t - Table-Direct,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+IPv4 unicast VRF default:
+O>* 3.3.3.3/32 [110/20] via 10.0.0.6, eth1, weight 1, 02:50:09
+
+
+---- Host 1 Traceroute --
+
+
+/ # traceroute 192.168.1.10
+traceroute to 192.168.1.10 (192.168.1.10), 30 hops max, 46 byte packets
+ 1  192.168.4.1 (192.168.4.1)  0.779 ms !N  0.532 ms !N  0.714 ms !N
+
+
+
+Ping: the last reply is 08:09:34 (seq 22), and nothing comes after it. The R1 log shows eth0: NIC Link is Down at the same second, 08:09:34.
+R1 route: only one OSPF route is left, 3.3.3.3/32 via R3. The route to 192.168.4.0/24 is gone. R1 can still reach R3, but R3 has no way to R4, so it is a dead end.
+Traceroute: hop 1 is R4 (192.168.4.1), and it answers !N, which means “network unreachable”. R4 itself says it has no route back to the R1-side LAN. I said “stars or unreachable” earlier. It was unreachable.
+The older log lines: 08:03:24 down and 08:08:43 up are from an earlier attempt, when you suspended and resumed R1-R2 before starting the ping. Your real test run is the last three lines at 08:09:34.
+
+----- recovery data -------
+turning on both suspended links to  measure how long  the network takes to heal  after both links are  suspended
+
+STARTED TO PING 
+
+/ # ping 192.168.1.10 | while read l; do echo "$(date +%T) $l"; done
+08:35:38 PING 192.168.1.10 (192.168.1.10): 56 data bytes
+08:35:45 64 bytes from 192.168.1.10: seq=7 ttl=61 time=2.109 ms
+08:35:46 64 bytes from 192.168.1.10: seq=8 ttl=61 time=2.072 ms
+08:35:47 64 bytes from 192.168.1.10: seq=9 ttl=61 time=2.416 ms
+08:35:48 64 bytes from 192.168.1.10: seq=10 ttl=61 time=2.571 ms
+08:35:49 64 bytes from 192.168.1.10: seq=11 ttl=61 time=2.125 ms
+08:35:50 64 bytes from 192.168.1.10: seq=12 ttl=61 time=2.332 ms
+08:35:51 64 bytes from 192.168.1.10: seq=13 ttl=61 time=1.964 ms
+08:35:52 64 bytes from 192.168.1.10: seq=14 ttl=61 time=2.891 ms
+08:35:53 64 bytes from 192.168.1.10: seq=15 ttl=61 time=2.311 ms
+08:35:54 64 bytes from 192.168.1.10: seq=16 ttl=61 time=1.981 ms
+08:35:55 64 bytes from 192.168.1.10: seq=17 ttl=61 time=2.444 ms
+
+LAST PING  08:35:38 
+
+FIRST PING AFTER THE LINKS ARE BACK AGAIN 08:35:45  
+
+7 SECONDS IS THE DIFFERENCE AND THE TIME IT TOOK FOR THE ADJACENCY TO FULLY FORM AGAIN OR THE TIME IT TAKES FOR THE NETWORK TO HEAL 
+ 
+r4's ospf neighbor 
+
+vyos@R4:~$ show ip ospf neigh
+
+Neighbor ID     Pri State           Up Time         Dead Time Address         Interface                        RXmtL RqstL DBsmL
+2.2.2.2           1 Full/-          2h21m03s          38.797s 10.0.0.9        eth0:10.0.0.10                       0     0     0
+3.3.3.3           1 Full/-          5m17s             32.179s 10.0.0.13       eth1:10.0.0.14                       0     0     0
+
+
+r1's ospf neighbor 
+
+vyos@R1:~$ show ip ospf neigh
+
+Neighbor ID     Pri State           Up Time         Dead Time Address         Interface                        RXmtL RqstL DBsmL
+3.3.3.3           1 Full/-          3h15m29s          31.780s 10.0.0.6        eth1:10.0.0.5                        0     0     0
+2.2.2.2           1 Full/-          4m15s             35.035s 10.0.0.2        eth0:10.0.0.1                        0     0     0
+
+

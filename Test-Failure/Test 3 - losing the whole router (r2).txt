@@ -1,0 +1,102 @@
+Test 3 - losing the whole router (r2)
+
+--- Ping (Host-1 to 192.168.1.10) ---
+
+/ # ping 192.168.1.10 | while read l; do echo "$(date +%T) $l"; done
+05:47:42 PING 192.168.1.10 (192.168.1.10): 56 data bytes
+05:47:42 64 bytes from 192.168.1.10: seq=0 ttl=61 time=2.429 ms
+05:47:43 64 bytes from 192.168.1.10: seq=1 ttl=61 time=2.044 ms
+05:47:44 64 bytes from 192.168.1.10: seq=2 ttl=61 time=2.275 ms
+05:47:45 64 bytes from 192.168.1.10: seq=3 ttl=61 time=2.204 ms
+05:47:46 64 bytes from 192.168.1.10: seq=4 ttl=61 time=2.136 ms
+05:47:47 64 bytes from 192.168.1.10: seq=5 ttl=61 time=1.836 ms
+05:47:48 64 bytes from 192.168.1.10: seq=6 ttl=61 time=2.315 ms
+05:47:49 64 bytes from 192.168.1.10: seq=7 ttl=61 time=2.096 ms
+05:47:50 64 bytes from 192.168.1.10: seq=8 ttl=61 time=1.940 ms
+05:47:51 64 bytes from 192.168.1.10: seq=9 ttl=61 time=2.318 ms
+05:47:52 64 bytes from 192.168.1.10: seq=10 ttl=61 time=2.278 ms
+05:47:53 64 bytes from 192.168.1.10: seq=11 ttl=61 time=2.225 ms
+05:47:54 64 bytes from 192.168.1.10: seq=12 ttl=61 time=1.908 ms
+05:47:55 64 bytes from 192.168.1.10: seq=13 ttl=61 time=1.871 ms
+05:47:56 64 bytes from 192.168.1.10: seq=14 ttl=61 time=1.920 ms
+05:47:57 64 bytes from 192.168.1.10: seq=15 ttl=61 time=2.066 ms
+05:47:58 64 bytes from 192.168.1.10: seq=16 ttl=61 time=2.778 ms
+05:47:59 64 bytes from 192.168.1.10: seq=17 ttl=61 time=1.789 ms
+05:48:00 64 bytes from 192.168.1.10: seq=18 ttl=61 time=1.895 ms
+05:48:01 64 bytes from 192.168.1.10: seq=19 ttl=61 time=1.887 ms
+05:48:02 64 bytes from 192.168.1.10: seq=20 ttl=61 time=1.840 ms
+05:48:03 64 bytes from 192.168.1.10: seq=21 ttl=61 time=2.553 ms
+05:48:04 64 bytes from 192.168.1.10: seq=22 ttl=61 time=1.959 ms
+05:48:05 64 bytes from 192.168.1.10: seq=23 ttl=61 time=3.011 ms
+05:48:06 64 bytes from 192.168.1.10: seq=24 ttl=61 time=2.147 ms
+05:48:07 64 bytes from 192.168.1.10: seq=25 ttl=61 time=2.378 ms
+05:48:08 64 bytes from 192.168.1.10: seq=26 ttl=61 time=2.520 ms
+05:48:09 64 bytes from 192.168.1.10: seq=27 ttl=61 time=2.431 ms
+05:48:10 64 bytes from 192.168.1.10: seq=28 ttl=61 time=2.458 ms
+05:48:11 64 bytes from 192.168.1.10: seq=29 ttl=61 time=2.404 ms
+05:48:12 64 bytes from 192.168.1.10: seq=30 ttl=61 time=2.231 ms
+05:48:13 64 bytes from 192.168.1.10: seq=31 ttl=61 time=2.260 ms
+05:48:14 64 bytes from 192.168.1.10: seq=32 ttl=61 time=1.800 ms
+05:48:48 64 bytes from 192.168.1.10: seq=66 ttl=61 time=2.481 ms
+05:48:49 64 bytes from 192.168.1.10: seq=67 ttl=61 time=1.860 ms
+05:48:50 64 bytes from 192.168.1.10: seq=68 ttl=61 time=2.000 ms
+05:48:51 64 bytes from 192.168.1.10: seq=69 ttl=61 time=2.120 ms
+05:48:52 64 bytes from 192.168.1.10: seq=70 ttl=61 time=2.129 ms
+05:48:53 64 bytes from 192.168.1.10: seq=71 ttl=61 time=2.420 ms
+05:48:54 64 bytes from 192.168.1.10: seq=72 ttl=61 time=1.984 ms
+05:48:55 64 bytes from 192.168.1.10: seq=73 ttl=61 time=1.900 ms
+05:48:56 64 bytes from 192.168.1.10: seq=74 ttl=61 time=1.861 ms
+05:48:57 64 bytes from 192.168.1.10: seq=75 ttl=61 time=2.060 ms
+05:48:58 64 bytes from 192.168.1.10: seq=76 ttl=61 time=2.289 ms
+05:48:59 64 bytes from 192.168.1.10: seq=77 ttl=61 time=2.307 ms
+05:49:00 64 bytes from 192.168.1.10: seq=78 ttl=61 time=2.279 ms
+05:49:01 64 bytes from 192.168.1.10: seq=79 ttl=61 time=1.746 ms
+
+
+--- R1 log --- ( this shows the log of adjacency to neighbor r2 being dropped)
+
+
+vyos@R1:~$ monitor log
+Nov 03 05:38:45 systemd[1]: systemd-tmpfiles-clean.service: Deactivated successfully.
+Nov 03 05:38:45 systemd[1]: Finished Cleanup of Temporary Directories.
+Nov 03 05:38:45 systemd[1]: run-credentials-systemd\x2dtmpfiles\x2dclean.service.mount: Deactivated successfully.
+Nov 03 05:39:53 kernel: e1000: eth0 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX
+Nov 03 05:39:53 vyos-netlinkd[2375]: RTM_NEWLINK -> eth0, state=UP, mac=0c:49:97:01:00:00
+Nov 03 05:39:54 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: Down -> Init (HelloReceived)
+Nov 03 05:40:03 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: Init -> ExStart (2-WayReceived)
+Nov 03 05:40:03 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: ExStart -> Exchange (NegotiationDone)
+Nov 03 05:40:03 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: Exchange -> Full (ExchangeDone)
+Nov 03 05:44:11 rsyslogd[1978]: -- MARK --
+Nov 03 05:48:54 ospfd[1374]: AdjChg: Nbr 2.2.2.2, NbrIP 10.0.0.2 (default) on eth0:10.0.0.1: Full -> Deleted (InactivityTimer)
+
+
+--- R1 show ip route ospf ---
+
+IPv4 unicast VRF default:
+O>* 3.3.3.3/32 [110/20] via 10.0.0.6, eth1, weight 1, 00:26:57
+O>* 4.4.4.4/32 [110/40] via 10.0.0.6, eth1, weight 1, 00:02:41
+O>* 10.0.0.8/30 [110/50] via 10.0.0.6, eth1, weight 1, 00:02:34
+O>* 10.0.0.12/30 [110/40] via 10.0.0.6, eth1, weight 1, 00:02:41
+O>* 192.168.4.0/24 [110/41] via 10.0.0.6, eth1, weight 1, 00:02:41
+
+
+--- Host 1 : traceroute 192.168.1.10 ---
+
+/ #  traceroute 192.168.1.10
+traceroute to 192.168.1.10 (192.168.1.10), 30 hops max, 46 byte packets
+ 1  192.168.4.1 (192.168.4.1)  0.776 ms  0.461 ms  0.485 ms
+ 2  10.0.0.13 (10.0.0.13)  1.546 ms  1.810 ms  1.627 ms
+ 3  10.0.0.5 (10.0.0.5)  1.661 ms  2.017 ms  1.428 ms
+ 4  192.168.1.10 (192.168.1.10)  1.640 ms  2.424 ms  1.552 ms
+
+
+
+RESULT: outage about 34 seconds, 33 pings lost.
+  
+Detection: OSPF Dead timer (InactivityTimer). 
+
+No link-down message, because a stopped router does not report the cable as down.
+ 
+Path after: R1 - R3 - R4 (backup).
+  
+Note: Host-1 and R1 clocks differ by a few seconds, so only Host-1 ping times are used for the outage.

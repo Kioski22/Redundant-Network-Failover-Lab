@@ -1,0 +1,133 @@
+Test 4 -  suspended the link between r4 and r3 
+
+ Suspend R3-R4 (the backup road) while everything else is healthy
+
+---- R4's log ----
+vyos@R4:~$ monitor log
+Nov 03 06:32:08 (systemd)[2519]: pam_unix(systemd-user:session): session opened for user vyos(uid=1002) by (uid=0)
+Nov 03 06:32:08 systemd[2519]: Queued start job for default target default.target.
+Nov 03 06:32:08 systemd[2519]: Reached target paths.target - Paths.
+Nov 03 06:32:08 systemd[2519]: Reached target sockets.target - Sockets.
+Nov 03 06:32:08 systemd[2519]: Reached target timers.target - Timers.
+Nov 03 06:32:08 systemd[2519]: Reached target basic.target - Basic System.
+Nov 03 06:32:08 systemd[1]: Started User Manager for UID 1002.
+Nov 03 06:32:08 systemd[2519]: Reached target default.target - Main User Target.
+Nov 03 06:32:08 systemd[2519]: Startup finished in 143ms.
+Nov 03 06:32:08 systemd[1]: Started Session 3 of User vyos.
+Nov 03 06:34:03 kernel: e1000: eth1 NIC Link is Down
+Nov 03 06:34:03 ospfd[1372]: AdjChg: Nbr 3.3.3.3, NbrIP 10.0.0.13 (default) on eth1:10.0.0.14: Full -> Deleted (KillNbr)
+Nov 03 06:34:03 vyos-netlinkd[2391]: RTM_NEWLINK -> eth1, state=DOWN, mac=0c:a8:7b:35:00:01 
+
+---- R4's ospf neighbor ----
+
+
+vyos@R4:~$ show ip ospf neighbor
+
+Neighbor ID     Pri State           Up Time         Dead Time Address         Interface                        RXmtL RqstL DBsmL
+2.2.2.2           1 Full/-          20m05s            34.595s 10.0.0.9        eth0:10.0.0.10                       0     0     0
+
+
+
+
+----Host 1 ping to 192.168.1.10 ----
+
+/ #   ping 192.168.1.10 | while read l; do echo "$(date +%T) $l"; done
+06:33:43 PING 192.168.1.10 (192.168.1.10): 56 data bytes
+06:33:43 64 bytes from 192.168.1.10: seq=0 ttl=61 time=3.439 ms
+06:33:44 64 bytes from 192.168.1.10: seq=1 ttl=61 time=2.362 ms
+06:33:45 64 bytes from 192.168.1.10: seq=2 ttl=61 time=1.879 ms
+06:33:46 64 bytes from 192.168.1.10: seq=3 ttl=61 time=2.095 ms
+06:33:47 64 bytes from 192.168.1.10: seq=4 ttl=61 time=2.207 ms
+06:33:48 64 bytes from 192.168.1.10: seq=5 ttl=61 time=1.934 ms
+06:33:49 64 bytes from 192.168.1.10: seq=6 ttl=61 time=2.324 ms
+06:33:50 64 bytes from 192.168.1.10: seq=7 ttl=61 time=2.665 ms
+06:33:51 64 bytes from 192.168.1.10: seq=8 ttl=61 time=2.198 ms
+06:33:52 64 bytes from 192.168.1.10: seq=9 ttl=61 time=2.566 ms
+06:33:53 64 bytes from 192.168.1.10: seq=10 ttl=61 time=1.759 ms
+06:33:54 64 bytes from 192.168.1.10: seq=11 ttl=61 time=1.828 ms
+06:33:55 64 bytes from 192.168.1.10: seq=12 ttl=61 time=2.124 ms
+06:33:56 64 bytes from 192.168.1.10: seq=13 ttl=61 time=2.099 ms
+06:33:57 64 bytes from 192.168.1.10: seq=14 ttl=61 time=2.089 ms
+06:33:58 64 bytes from 192.168.1.10: seq=15 ttl=61 time=2.354 ms
+06:33:59 64 bytes from 192.168.1.10: seq=16 ttl=61 time=2.184 ms
+06:34:00 64 bytes from 192.168.1.10: seq=17 ttl=61 time=1.903 ms
+06:34:01 64 bytes from 192.168.1.10: seq=18 ttl=61 time=2.858 ms
+06:34:02 64 bytes from 192.168.1.10: seq=19 ttl=61 time=2.027 ms
+06:34:03 64 bytes from 192.168.1.10: seq=20 ttl=61 time=2.252 ms
+06:34:04 64 bytes from 192.168.1.10: seq=21 ttl=61 time=2.133 ms
+06:34:05 64 bytes from 192.168.1.10: seq=22 ttl=61 time=2.113 ms
+06:34:06 64 bytes from 192.168.1.10: seq=23 ttl=61 time=2.018 ms
+06:34:07 64 bytes from 192.168.1.10: seq=24 ttl=61 time=2.093 ms
+06:34:08 64 bytes from 192.168.1.10: seq=25 ttl=61 time=2.077 ms
+06:34:09 64 bytes from 192.168.1.10: seq=26 ttl=61 time=2.377 ms
+06:34:10 64 bytes from 192.168.1.10: seq=27 ttl=61 time=2.895 ms
+06:34:11 64 bytes from 192.168.1.10: seq=28 ttl=61 time=1.846 ms
+06:34:12 64 bytes from 192.168.1.10: seq=29 ttl=61 time=1.998 ms
+06:34:13 64 bytes from 192.168.1.10: seq=30 ttl=61 time=2.691 ms
+06:34:14 64 bytes from 192.168.1.10: seq=31 ttl=61 time=2.007 ms
+06:34:15 64 bytes from 192.168.1.10: seq=32 ttl=61 time=1.921 ms
+06:34:16 64 bytes from 192.168.1.10: seq=33 ttl=61 time=2.240 ms
+06:34:17 64 bytes from 192.168.1.10: seq=34 ttl=61 time=2.010 ms
+06:34:18 64 bytes from 192.168.1.10: seq=35 ttl=61 time=2.290 ms
+06:34:19 64 bytes from 192.168.1.10: seq=36 ttl=61 time=1.941 ms
+06:34:20 64 bytes from 192.168.1.10: seq=37 ttl=61 time=2.452 ms
+06:34:21 64 bytes from 192.168.1.10: seq=38 ttl=61 time=1.793 ms
+06:34:22 64 bytes from 192.168.1.10: seq=39 ttl=61 time=2.350 ms
+06:34:23 64 bytes from 192.168.1.10: seq=40 ttl=61 time=2.207 ms
+06:34:24 64 bytes from 192.168.1.10: seq=41 ttl=61 time=2.233 ms
+06:34:25 64 bytes from 192.168.1.10: seq=42 ttl=61 time=2.099 ms
+06:34:26 64 bytes from 192.168.1.10: seq=43 ttl=61 time=2.659 ms
+06:34:27 64 bytes from 192.168.1.10: seq=44 ttl=61 time=2.054 ms
+06:34:28 64 bytes from 192.168.1.10: seq=45 ttl=61 time=2.289 ms
+06:34:29 64 bytes from 192.168.1.10: seq=46 ttl=61 time=3.278 ms
+06:34:30 64 bytes from 192.168.1.10: seq=47 ttl=61 time=2.008 ms
+06:34:31 64 bytes from 192.168.1.10: seq=48 ttl=61 time=2.141 ms
+06:34:32 64 bytes from 192.168.1.10: seq=49 ttl=61 time=2.152 ms
+06:34:33 64 bytes from 192.168.1.10: seq=50 ttl=61 time=1.828 ms
+06:34:34 64 bytes from 192.168.1.10: seq=51 ttl=61 time=1.955 ms
+06:34:35 64 bytes from 192.168.1.10: seq=52 ttl=61 time=2.157 ms
+06:34:36 64 bytes from 192.168.1.10: seq=53 ttl=61 time=2.103 ms
+06:34:37 64 bytes from 192.168.1.10: seq=54 ttl=61 time=2.828 ms
+06:34:38 64 bytes from 192.168.1.10: seq=55 ttl=61 time=2.295 ms
+06:34:39 64 bytes from 192.168.1.10: seq=56 ttl=61 time=2.043 ms
+06:34:40 64 bytes from 192.168.1.10: seq=57 ttl=61 time=2.095 ms
+06:34:41 64 bytes from 192.168.1.10: seq=58 ttl=61 time=1.978 ms
+06:34:42 64 bytes from 192.168.1.10: seq=59 ttl=61 time=1.930 ms
+06:34:43 64 bytes from 192.168.1.10: seq=60 ttl=61 time=1.954 ms
+06:34:44 64 bytes from 192.168.1.10: seq=61 ttl=61 time=2.090 ms
+06:34:45 64 bytes from 192.168.1.10: seq=62 ttl=61 time=2.766 ms
+06:34:46 64 bytes from 192.168.1.10: seq=63 ttl=61 time=2.359 ms
+06:34:47 64 bytes from 192.168.1.10: seq=64 ttl=61 time=2.417 ms
+06:34:48 64 bytes from 192.168.1.10: seq=65 ttl=61 time=2.599 ms
+06:34:49 64 bytes from 192.168.1.10: seq=66 ttl=61 time=2.018 ms
+06:34:50 64 bytes from 192.168.1.10: seq=67 ttl=61 time=2.284 ms
+06:34:51 64 bytes from 192.168.1.10: seq=68 ttl=61 time=2.499 ms
+06:34:52 64 bytes from 192.168.1.10: seq=69 ttl=61 time=1.945 ms
+06:34:53 64 bytes from 192.168.1.10: seq=70 ttl=61 time=1.989 ms
+06:34:54 64 bytes from 192.168.1.10: seq=71 ttl=61 time=2.025 ms
+06:34:55 64 bytes from 192.168.1.10: seq=72 ttl=61 time=1.893 ms
+06:34:56 64 bytes from 192.168.1.10: seq=73 ttl=61 time=2.510 ms
+06:34:57 64 bytes from 192.168.1.10: seq=74 ttl=61 time=2.017 ms
+06:34:58 64 bytes from 192.168.1.10: seq=75 ttl=61 time=2.120 ms
+06:34:59 64 bytes from 192.168.1.10: seq=76 ttl=61 time=2.263 ms
+06:35:00 64 bytes from 192.168.1.10: seq=77 ttl=61 time=2.216 ms
+06:35:01 64 bytes from 192.168.1.10: seq=78 ttl=61 time=2.431 ms
+06:35:02 64 bytes from 192.168.1.10: seq=79 ttl=61 time=1.984 ms
+^C
+
+ping from host 1 to 192.168.1.10 shows no packet is dropped during the outage of the backup path 
+ 
+--- host 1 to 192.168.1.10 traceroute ---
+
+
+/ #  traceroute 192.168.1.10
+traceroute to 192.168.1.10 (192.168.1.10), 30 hops max, 46 byte packets
+ 1  192.168.4.1 (192.168.4.1)  0.692 ms  0.766 ms  0.349 ms
+ 2  10.0.0.9 (10.0.0.9)  1.827 ms  1.573 ms  2.218 ms
+ 3  10.0.0.1 (10.0.0.1)  2.420 ms  2.477 ms  2.167 ms
+ 4  192.168.1.10 (192.168.1.10)  1.668 ms  3.237 ms  1.720 ms
+
+
+
+RESULT: outage 0 seconds, 0 pings lost (seq 0 to 79 continuous).
+Users saw nothing, but redundancy is lost: the network now has no backup path.
