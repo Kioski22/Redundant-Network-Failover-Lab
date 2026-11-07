@@ -126,6 +126,23 @@ Notes on each ticket:
 - Monitor BFD sessions as well as OSPF neighbors, and monitor backup paths, because both can fail without users noticing.
 - Measure carefully: use one clock, state the measurement resolution, and prove a fix with a direct check, not only with pings.
 
+## Repository contents
+
+| Folder / file | What it contains |
+|---|---|
+| `baseline/` | Snapshot of the healthy network before any failure: OSPF neighbors, routes, OSPF database and settings for each router, plus the hosts' ping and traceroute. Used to compare before and after each test. |
+| `Test-Failure/` | Outputs and logs from the failure tests. |
+| `Host_outputs/` | Ping and traceroute output captured on the two hosts. |
+| `Wireshark Packet capture/` | Capture of the R1 eth0 to R2 eth0 link in the healthy network. It shows only OSPF Hello packets, sent every 10 seconds to 224.0.0.5. |
+| `Redundant network and failover lab Raw notes.pdf` | My raw working notes, unedited. |
+
+## Baseline (healthy network)
+
+- Every router has 2 OSPF neighbors, all in state Full.
+- R1 reaches 192.168.4.0/24 via R2 with metric 21. The backup via R3 would cost 41, so it is not used.
+- OSPF Hello 10 s, Dead 40 s, network type point-to-point on all router links.
+- Hosts: 0% packet loss, about 2 to 3 ms, TTL 61 (three routers in between). Traceroute from Host-1 goes R4, R2, R1, then the host.
+
 ## Skills demonstrated
 
 OSPF design and cost tuning, BFD configuration, failover testing and measurement, log analysis (`monitor log`), systematic troubleshooting, technical documentation.
